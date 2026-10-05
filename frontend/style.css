@@ -1,0 +1,171 @@
+:root {
+    --gold: #d4a34b;
+    --gold-hover: #b88a38;
+    --dark-blue: #171728;
+    --dark-blue-light: #24243e;
+    --light-cream: #faf8f4;
+    --text-dark: #333333;
+    --whatsapp: #25D366;
+    --instagram: #E1306C;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+}
+
+.serif-font, h1, h2, h3, h4, .section-title {
+    font-family: 'Playfair Display', serif;
+}
+
+.text-primary-gold { color: var(--gold) !important; }
+.text-gold { color: var(--gold) !important; }
+.bg-gold { background-color: var(--gold) !important; }
+.bg-dark-blue { background-color: var(--dark-blue) !important; }
+.bg-light-cream { background-color: var(--light-cream) !important; }
+.bg-whatsapp { background-color: var(--whatsapp) !important; }
+.bg-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.tracking-wide { letter-spacing: 2px; }
+.max-w-600 { max-width: 600px; }
+
+.btn-gold {
+    background-color: var(--gold);
+    color: white;
+    border: none;
+}
+.btn-gold:hover {
+    background-color: var(--gold-hover);
+    color: white;
+}
+.btn-dark-blue {
+    background-color: var(--dark-blue);
+    color: white;
+}
+.btn-dark-blue:hover {
+    background-color: var(--dark-blue-light);
+    color: white;
+}
+
+.navbar {
+    background-color: rgba(23, 23, 40, 0.85) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+.logo-icon {
+    background-color: var(--gold);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.hero-section {
+    height: 100vh;
+    min-height: 700px;
+    background: linear-gradient(rgba(23, 23, 40, 0.7), rgba(23, 23, 40, 0.4)), url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat;
+    position: relative;
+    padding-top: 80px;
+}
+.hero-title {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+.hero-subtitle {
+    font-size: 1.1rem;
+    max-width: 500px;
+}
+.badge-gold {
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.tag {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 0.85rem;
+    backdrop-filter: blur(5px);
+}
+
+.service-card {
+    transition: transform 0.3s ease;
+    border-color: #eee !important;
+}
+.service-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--gold) !important;
+}
+.service-icon {
+    width: 50px;
+    height: 50px;
+    background-color: var(--light-cream);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.5rem;
+}
+
+.property-img {
+    height: 220px;
+    object-fit: cover;
+}
+.property-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.property-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important;
+}
+
+.contact-section {
+    background-color: var(--dark-blue);
+}
+.contact-card {
+    background-color: var(--dark-blue-light);
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: background-color 0.3s;
+}
+.contact-card:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+.cta-box {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+.cta-box .btn-light { color: var(--gold); }
+
+.floating-whatsapp {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: var(--whatsapp);
+    color: white;
+    border-radius: 50%;
+    font-size: 2rem;
+    text-decoration: none;
+    z-index: 1000;
+    transition: transform 0.3s;
+}
+.floating-whatsapp:hover {
+    transform: scale(1.1);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .hero-title { font-size: 2.5rem; }
+}

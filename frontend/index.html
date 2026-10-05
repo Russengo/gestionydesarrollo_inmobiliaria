@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siandra - Negocios Inmobiliarios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <div class="logo-icon me-2"><i class="bi bi-house-door-fill"></i></div>
+                <div>
+                    <span class="d-block fw-bold text-white lh-1">Siandra</span>
+                    <small class="text-primary-gold" style="font-size: 0.6rem; letter-spacing: 1px;">NEGOCIOS INMOBILIARIOS</small>
+                </div>
+            </a>
+            <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="bi bi-list fs-1"></i>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link text-white px-3" href="index.html#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-3" href="index.html#servicios">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-3" href="index.html#propiedades">Propiedades</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-3" href="index.html#nosotros">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-3" href="index.html#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="d-none d-lg-block">
+                <a href="index.html#contacto" class="btn btn-gold rounded-pill px-4 fw-medium">Consultar ahora</a>
+            </div>
+        </div>
+    </nav>
+    <header class="hero-section" id="inicio">
+        <div class="container h-100 d-flex flex-column justify-content-center">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="badge-gold mb-3 d-inline-block">
+                        <i class="bi bi-star-fill me-1"></i> MAT. 1545 CIER — CONCORDIA, ENTRE RÍOS <i class="bi bi-star-fill ms-1"></i>
+                    </div>
+                    <h1 class="hero-title text-white mb-3">Que tu sueño de<br><span class="text-primary-gold">tener una propiedad</span><br>se haga realidad</h1>
+                    <p class="hero-subtitle text-white mb-4">Te acompañamos en cada paso: desde la búsqueda hasta la firma. Experiencia, confianza y compromiso en cada operación.</p>
+                    <div class="tags-container mb-4 d-flex flex-wrap gap-2">
+                        <span class="tag">Ventas</span>
+                        <span class="tag">Alquileres</span>
+                        <span class="tag">Tasaciones</span>
+                        <span class="tag">Administraciones</span>
+                        <span class="tag">Asesorías</span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <a href="#" class="btn btn-gold rounded-pill px-4 py-2"><i class="bi bi-whatsapp me-2"></i>Escribinos por WhatsApp</a>
+                        <a href="#propiedades" class="btn btn-outline-light rounded-pill px-4 py-2">Ver Propiedades</a>
+                    </div>
+                    <div class="location-text text-white-50 small">
+                        <i class="bi bi-geo-alt me-1"></i> La Rioja 630, Concordia 3200
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="py-5 bg-white" id="servicios">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h6 class="text-primary-gold fw-bold tracking-wide">¿QUÉ HACEMOS?</h6>
+                <h2 class="section-title">Nuestros Servicios</h2>
+                <p class="text-muted mt-3 max-w-600 mx-auto">Ofrecemos una solución completa para todas tus necesidades inmobiliarias, con el respaldo de años de experiencia en el mercado de Concordia.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="service-card p-4 rounded-4 border h-100 position-relative">
+                        <div class="service-icon mb-3"><i class="bi bi-house-door"></i></div>
+                        <h4 class="serif-font fw-bold">Ventas</h4>
+                        <p class="text-muted small mb-4 pb-3 border-bottom">Te ayudamos a vender tu propiedad al mejor precio en el menor tiempo posible, con asesoramiento personalizado en cada etapa.</p>
+                        <a href="#" class="text-primary-gold fw-bold text-decoration-none small text-uppercase">Máximo valor para tu inmueble</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card p-4 rounded-4 border h-100 position-relative">
+                        <div class="service-icon mb-3"><i class="bi bi-key"></i></div>
+                        <h4 class="serif-font fw-bold">Alquileres</h4>
+                        <p class="text-muted small mb-4 pb-3 border-bottom">Gestionamos contratos de alquiler de manera ágil y segura, protegiendo tus intereses tanto si sos propietario como inquilino.</p>
+                        <a href="#" class="text-primary-gold fw-bold text-decoration-none small text-uppercase">Propietarios e inquilinos</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card p-4 rounded-4 border h-100 position-relative">
+                        <div class="service-icon mb-3"><i class="bi bi-graph-up-arrow"></i></div>
+                        <h4 class="serif-font fw-bold">Tasaciones</h4>
+                        <p class="text-muted small mb-4 pb-3 border-bottom">Valuación profesional de tu propiedad basada en el mercado actual de Concordia y Entre Ríos, con criterios técnicos y objetivos.</p>
+                        <a href="#" class="text-primary-gold fw-bold text-decoration-none small text-uppercase">Precio justo y real</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-5 bg-light-cream" id="propiedades">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h6 class="text-primary-gold fw-bold tracking-wide">PORTAFOLIO</h6>
+                <h2 class="section-title">Propiedades Destacadas</h2>
+                <p class="text-muted mt-3 max-w-600 mx-auto">Explorá nuestro catálogo de propiedades seleccionadas. Cada una analizada y respaldada por nuestra experiencia en el mercado local.</p>
+            </div>
+            <div class="row g-4 mb-5">
+                <div class="col-lg-3 col-md-6">
+                    <div class="property-card bg-white rounded-4 overflow-hidden h-100 border-0 shadow-sm">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=400" alt="Casa" class="w-100 property-img">
+                            <span class="badge bg-gold position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill">En Venta</span>
+                        </div>
+                        <div class="p-3">
+                            <h5 class="serif-font fw-bold mb-1">Casa familiar moderna</h5>
+                            <p class="text-muted small mb-3"><i class="bi bi-geo-alt-fill text-gold me-1"></i> Barrio Norte, Concordia</p>
+                            <div class="d-flex justify-content-between text-muted small mb-3 pb-3 border-bottom">
+                                <span><i class="bi bi-door-open me-1"></i>3 amb.</span>
+                                <span><i class="bi bi-droplet me-1"></i>2 baños</span>
+                                <span><i class="bi bi-bounding-box me-1"></i>120 m²</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary-gold fw-bold">Consultar precio</span>
+                                <a href="#" class="text-dark fw-medium text-decoration-none small">Consultar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="property-card bg-white rounded-4 overflow-hidden h-100 border-0 shadow-sm">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&q=80&w=400" alt="Depto" class="w-100 property-img">
+                            <span class="badge bg-dark-blue position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill">Alquiler</span>
+                        </div>
+                        <div class="p-3">
+                            <h5 class="serif-font fw-bold mb-1">Departamento luminoso</h5>
+                            <p class="text-muted small mb-3"><i class="bi bi-geo-alt-fill text-gold me-1"></i> Centro, Concordia</p>
+                            <div class="d-flex justify-content-between text-muted small mb-3 pb-3 border-bottom">
+                                <span><i class="bi bi-door-open me-1"></i>2 amb.</span>
+                                <span><i class="bi bi-droplet me-1"></i>1 baños</span>
+                                <span><i class="bi bi-bounding-box me-1"></i>65 m²</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary-gold fw-bold">Consultar precio</span>
+                                <a href="#" class="text-dark fw-medium text-decoration-none small">Consultar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="property-card bg-white rounded-4 overflow-hidden h-100 border-0 shadow-sm">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=400" alt="Interior" class="w-100 property-img">
+                            <span class="badge bg-gold position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill">En Venta</span>
+                        </div>
+                        <div class="p-3">
+                            <h5 class="serif-font fw-bold mb-1">Interior premium renovado</h5>
+                            <p class="text-muted small mb-3"><i class="bi bi-geo-alt-fill text-gold me-1"></i> Zona Residencial, Concordia</p>
+                            <div class="d-flex justify-content-between text-muted small mb-3 pb-3 border-bottom">
+                                <span><i class="bi bi-door-open me-1"></i>4 amb.</span>
+                                <span><i class="bi bi-droplet me-1"></i>2 baños</span>
+                                <span><i class="bi bi-bounding-box me-1"></i>180 m²</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary-gold fw-bold">Consultar precio</span>
+                                <a href="#" class="text-dark fw-medium text-decoration-none small">Consultar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="property-card bg-white rounded-4 overflow-hidden h-100 border-0 shadow-sm">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=400" alt="Patio" class="w-100 property-img">
+                            <span class="badge bg-dark-blue position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill">Alquiler</span>
+                        </div>
+                        <div class="p-3">
+                            <h5 class="serif-font fw-bold mb-1">Casa con patio y jardín</h5>
+                            <p class="text-muted small mb-3"><i class="bi bi-geo-alt-fill text-gold me-1"></i> Barrio Sur, Concordia</p>
+                            <div class="d-flex justify-content-between text-muted small mb-3 pb-3 border-bottom">
+                                <span><i class="bi bi-door-open me-1"></i>3 amb.</span>
+                                <span><i class="bi bi-droplet me-1"></i>1 baños</span>
+                                <span><i class="bi bi-bounding-box me-1"></i>95 m²</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary-gold fw-bold">Consultar precio</span>
+                                <a href="#" class="text-dark fw-medium text-decoration-none small">Consultar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="propiedades.html" class="btn btn-dark-blue rounded-pill px-5 py-3 fw-medium">Ver todas las propiedades</a>
+            </div>
+        </div>
+    </section>
+    <section class="py-5 bg-white" id="nosotros">
+        <div class="container py-5">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5">
+                    <div class="position-relative">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600" alt="Victoria Siandra" class="img-fluid rounded-4 shadow">
+                        <div class="position-absolute top-0 end-0 translate-middle-y me-n4">
+                            <div class="bg-gold text-white p-4 rounded-4 text-center shadow-lg" style="width: 140px;">
+                                <h3 class="fw-bold mb-0">500+</h3>
+                                <p class="small mb-0 lh-sm">Propiedades gestionadas</p>
+                            </div>
+                        </div>
+                        <div class="position-absolute bottom-0 start-0 m-4 w-75">
+                            <div class="bg-dark-blue text-white p-3 rounded-3 shadow">
+                                <h5 class="fw-bold mb-1">Victoria Siandra</h5>
+                                <p class="small text-gold mb-1">Agente Inmobiliaria • Mat. 1545 CIER</p>
+                                <p class="small text-white-50 mb-0">La Rioja 630, Concordia 3200</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 ps-lg-5">
+                    <h6 class="text-primary-gold fw-bold tracking-wide">QUIÉNES SOMOS</h6>
+                    <h2 class="section-title mb-4">Tu confianza es nuestra<br>mayor propiedad</h2>
+                    <p class="text-muted mb-3">Somos <strong>Victoria Siandra Negocios Inmobiliarios</strong>, una inmobiliaria de confianza ubicada en el corazón de Concordia, Entre Ríos. Nos especializamos en brindar soluciones inmobiliarias integrales con el respaldo de una matrícula habilitada y años de experiencia en el mercado local.</p>
+                    <p class="text-muted mb-4">Nuestro compromiso es acompañarte en cada etapa del proceso, ya sea que quieras vender, comprar, alquilar o simplemente conocer el valor de tu propiedad. Trabajamos con honestidad, profesionalismo y una atención genuinamente personalizada.</p>
+                    <ul class="list-unstyled mb-5 text-muted">
+                        <li class="mb-2"><i class="bi bi-shield-check text-gold me-2"></i> Operaciones 100% legales y seguras</li>
+                        <li class="mb-2"><i class="bi bi-award text-gold me-2"></i> Matrícula habilitada CIER N° 1545</li>
+                        <li class="mb-2"><i class="bi bi-person-hearts text-gold me-2"></i> Atención personalizada y cercana</li>
+                        <li class="mb-2"><i class="bi bi-check2-circle text-gold me-2"></i> Transparencia en cada operación</li>
+                    </ul>
+                    <div class="row g-3 text-center">
+                        <div class="col-6 col-md-3">
+                            <div class="border rounded-4 p-3 h-100">
+                                <h4 class="text-primary-gold fw-bold mb-1">10+</h4>
+                                <p class="small text-muted mb-0 lh-sm">Años de experiencia</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="border rounded-4 p-3 h-100">
+                                <h4 class="text-primary-gold fw-bold mb-1">500+</h4>
+                                <p class="small text-muted mb-0 lh-sm">Propiedades gestionadas</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="border rounded-4 p-3 h-100">
+                                <h4 class="text-primary-gold fw-bold mb-1">100%</h4>
+                                <p class="small text-muted mb-0 lh-sm">Clientes satisfechos</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="border rounded-4 p-3 h-100">
+                                <h4 class="text-primary-gold fw-bold mb-1">Mat. 1545</h4>
+                                <p class="small text-muted mb-0 lh-sm">CIER certificada</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="contact-section pt-5 pb-0" id="contacto">
+        <div class="container pt-5 pb-4">
+            <div class="text-center mb-5">
+                <h6 class="text-primary-gold fw-bold tracking-wide">HABLEMOS</h6>
+                <h2 class="section-title text-white">¿Listo para dar el primer paso?</h2>
+                <p class="text-white-50 mt-3 max-w-600 mx-auto">Contactanos hoy mismo y te asesoramos sin cargo. Estamos para ayudarte a encontrar la propiedad ideal o gestionar la tuya.</p>
+            </div>
+            <div class="row g-4 align-items-center mb-5">
+                <div class="col-lg-6">
+                    <div class="d-flex flex-column gap-3">
+                        <div class="contact-card p-4 rounded-4 d-flex align-items-center">
+                            <div class="icon-box bg-whatsapp text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="bi bi-whatsapp fs-4"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white mb-1 fw-bold">WhatsApp</h5>
+                                <p class="text-white-50 mb-1">+54 9 345 404-0047</p>
+                                <a href="#" class="text-primary-gold small text-decoration-none">Escribinos ahora &rarr;</a>
+                            </div>
+                        </div>
+                        <div class="contact-card p-4 rounded-4 d-flex align-items-center">
+                            <div class="icon-box bg-instagram text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="bi bi-instagram fs-4"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white mb-1 fw-bold">Instagram</h5>
+                                <p class="text-white-50 mb-1">@inmobiliariasiandra</p>
+                                <a href="#" class="text-primary-gold small text-decoration-none">Ver perfil &rarr;</a>
+                            </div>
+                        </div>
+                        <div class="contact-card p-4 rounded-4 d-flex align-items-center">
+                            <div class="icon-box bg-gold text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="bi bi-geo-alt fs-4"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white mb-1 fw-bold">Dirección</h5>
+                                <p class="text-white-50 mb-1 lh-sm">La Rioja 630<br>Concordia, Entre Ríos 3200<br><small>Victoria Siandra - Mat. 1545 CIER</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="cta-box rounded-4 h-100 overflow-hidden shadow">
+                        <iframe width="100%" height="100%" style="border:0; min-height: 400px; border-radius: 1rem;" src="https://maps.google.com/maps?q=La%20Rioja%20630,%20Concordia,%20Entre%20Rios&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-dark-blue-light border-top border-secondary border-opacity-25 py-3">
+            <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <small class="text-white-50 mb-2 mb-md-0">&copy; 2026 Victoria Siandra. Todos los derechos reservados.</small>
+                <small class="text-white-50">Desarrollado por <span class="text-primary-gold fw-bold">RM | Developer</span></small>
+            </div>
+        </div>
+    </footer>
+    <a href="#" class="floating-whatsapp d-flex align-items-center justify-content-center shadow-lg">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
