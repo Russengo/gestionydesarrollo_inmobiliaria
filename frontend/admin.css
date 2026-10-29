@@ -1,0 +1,312 @@
+
+:root {
+    --gold: #d4a34b;
+    --gold-hover: #b88a38;
+    --dark-blue: #171728;
+    --dark-blue-light: #24243e;
+    --light-cream: #faf8f4;
+    --text-dark: #333333;
+    --sidebar-width: 255px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--light-cream) !important;
+    color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+.serif-font,
+.navbar-brand {
+    font-family: 'Playfair Display', serif;
+}
+
+/* Barra superior */
+
+.navbar {
+    min-height: 70px;
+    background: var(--dark-blue) !important;
+    z-index: 1030;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.navbar-brand::before {
+    content: "\F3E8";
+    font-family: "bootstrap-icons";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: white;
+    font-size: 1.2rem;
+}
+
+#accountEmail {
+    max-width: 250px;
+    overflow-wrap: anywhere;
+    color: #d8d5e4;
+    font-size: 0.8rem;
+}
+
+/* Estructura principal */
+
+.container-fluid > .row {
+    min-height: calc(100vh - 70px);
+}
+
+#sidebar {
+    background: white !important;
+    padding: 24px 14px !important;
+    border-right: 1px solid #eee9e0 !important;
+}
+
+#sidebar .text-secondary {
+    color: #999 !important;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+main {
+    min-width: 0;
+    padding: 32px !important;
+}
+
+/* Navegación lateral */
+
+.nav-module {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent !important;
+    color: #555 !important;
+    text-align: left;
+    font-size: 0.9rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.nav-module i {
+    width: 20px;
+    font-size: 1.1rem;
+}
+
+.nav-module:hover {
+    background: var(--light-cream) !important;
+    color: var(--dark-blue) !important;
+}
+
+.nav-module.active {
+    background: #f8f0df !important;
+    color: #91651e !important;
+    font-weight: 700;
+}
+
+/* Textos */
+
+main .text-secondary {
+    color: #858585 !important;
+    font-size: 0.9rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    color: var(--dark-blue);
+}
+
+/* Tarjetas */
+
+.admin-card,
+.card {
+    background: white;
+    border: 1px solid #f0ece5;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.035);
+}
+
+.stat-card {
+    height: 100%;
+    padding: 22px;
+}
+
+.stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    background: #f8f0df;
+    color: var(--gold-hover);
+    font-size: 1.35rem;
+}
+
+.stat-value {
+    margin: 18px 0 4px;
+    color: var(--dark-blue);
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.stat-label {
+    color: #777;
+    font-size: 0.85rem;
+}
+
+.section-heading {
+    color: var(--dark-blue);
+    font-size: 1.3rem;
+}
+
+.module-placeholder {
+    padding: 55px 24px;
+    text-align: center;
+}
+
+.empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: var(--light-cream);
+    color: var(--gold);
+    font-size: 2rem;
+}
+
+/* Botones */
+
+.btn-gold {
+    border: none;
+    background: var(--gold);
+    color: white;
+}
+
+.btn-gold:hover,
+.btn-gold:focus {
+    background: var(--gold-hover);
+    color: white;
+}
+
+.btn-outline-light:hover {
+    color: var(--dark-blue);
+}
+
+/* Estados */
+
+.status-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border-radius: 30px;
+    background: #f4f2ed;
+    color: #69645a;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Formularios y tablas */
+
+.form-control,
+.form-select {
+    border-color: #e5e0d7;
+    border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 0.2rem rgba(212, 163, 75, 0.18);
+}
+
+.table {
+    --bs-table-bg: transparent;
+}
+
+.table thead th {
+    background: #f8f5ef;
+    color: #625944;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.badge {
+    font-weight: 500;
+}
+
+/* Menú móvil */
+
+#mobileMenuButton {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .container-fluid > .row {
+        display: block;
+    }
+
+    #sidebar {
+        display: none;
+        width: 100%;
+        border-right: 0 !important;
+        border-bottom: 1px solid #eee9e0 !important;
+    }
+
+    #sidebar.show {
+        display: block;
+    }
+
+    main {
+        padding: 22px 15px !important;
+    }
+
+    #mobileMenuButton {
+        display: inline-block;
+    }
+
+    #accountEmail {
+        display: none;
+    }
+}
+
+@media (max-width: 400px) {
+    .navbar-brand {
+        font-size: 1rem;
+    }
+
+    main {
+        padding: 18px 10px !important;
+    }
+}

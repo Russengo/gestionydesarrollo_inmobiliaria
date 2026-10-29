@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,321 +6,32 @@
 
     <title>Panel de Gestión - Siandra</title>
 
-    <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
-
-    <!-- Tipografías -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <!-- Iconos -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
         rel="stylesheet"
     >
-
-    <style>
-        :root {
-            --gold: #d4a34b;
-            --gold-hover: #b88a38;
-            --dark-blue: #171728;
-            --dark-blue-light: #24243e;
-            --light-cream: #faf8f4;
-            --text-dark: #333333;
-            --sidebar-width: 255px;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background: var(--light-cream);
-            color: var(--text-dark);
-            min-height: 100vh;
-        }
-
-        .serif-font,
-        h1,
-        h2,
-        h3 {
-            font-family: 'Playfair Display', serif;
-        }
-
-        .navbar {
-            background: var(--dark-blue);
-            min-height: 70px;
-            z-index: 1030;
-        }
-
-        .logo-icon {
-            background: var(--gold);
-            color: white;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .app-layout {
-            display: flex;
-            min-height: calc(100vh - 70px);
-        }
-
-        .sidebar {
-            width: var(--sidebar-width);
-            flex-shrink: 0;
-            background: white;
-            border-right: 1px solid #eee9e0;
-            padding: 24px 14px;
-        }
-
-        .sidebar-label {
-            color: #999;
-            font-size: .7rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            padding: 0 12px;
-            margin: 16px 0 8px;
-        }
-
-        .nav-module {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 4px;
-            border: 0;
-            border-radius: 10px;
-            color: #555;
-            background: transparent;
-            text-align: left;
-            font-size: .9rem;
-            transition: .2s;
-            cursor: pointer;
-        }
-
-        .nav-module i {
-            width: 20px;
-            font-size: 1.1rem;
-        }
-
-        .nav-module:hover {
-            background: var(--light-cream);
-            color: var(--dark-blue);
-        }
-
-        .nav-module.active {
-            background: #f8f0df;
-            color: #91651e;
-            font-weight: 700;
-        }
-
-        .main-content {
-            flex: 1;
-            min-width: 0;
-            padding: 32px;
-        }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 20px;
-            margin-bottom: 28px;
-        }
-
-        .page-title {
-            font-size: 2rem;
-            margin: 0 0 8px;
-            color: var(--dark-blue);
-        }
-
-        .muted-text {
-            color: #858585;
-            font-size: .9rem;
-        }
-
-        .admin-card {
-            background: white;
-            border: 1px solid #f0ece5;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .035);
-        }
-
-        .stat-card {
-            height: 100%;
-            padding: 22px;
-        }
-
-        .stat-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            background: #f8f0df;
-            color: var(--gold-hover);
-            font-size: 1.35rem;
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--dark-blue);
-            margin: 18px 0 4px;
-        }
-
-        .stat-label {
-            color: #777;
-            font-size: .85rem;
-        }
-
-        .section-heading {
-            font-size: 1.3rem;
-            color: var(--dark-blue);
-        }
-
-        .module-placeholder {
-            padding: 55px 24px;
-            text-align: center;
-        }
-
-        .empty-icon {
-            width: 72px;
-            height: 72px;
-            background: var(--light-cream);
-            color: var(--gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 20px;
-        }
-
-        .btn-gold {
-            background: var(--gold);
-            color: white;
-            border: none;
-        }
-
-        .btn-gold:hover {
-            background: var(--gold-hover);
-            color: white;
-        }
-
-        .status-note {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            background: #f4f2ed;
-            color: #69645a;
-            border-radius: 30px;
-            padding: 7px 12px;
-            font-size: .75rem;
-            font-weight: 600;
-        }
-
-        .account-email {
-            color: #d8d5e4;
-            font-size: .78rem;
-            max-width: 220px;
-            overflow-wrap: anywhere;
-        }
-
-        .mobile-menu-button {
-            display: none;
-        }
-
-        @media (max-width: 900px) {
-            .sidebar {
-                width: 220px;
-            }
-
-            .main-content {
-                padding: 24px 18px;
-            }
-        }
-
-        @media (max-width: 650px) {
-            .app-layout {
-                display: block;
-            }
-
-            .sidebar {
-                display: none;
-                width: 100%;
-                border-right: 0;
-                border-bottom: 1px solid #eee;
-                padding: 12px;
-            }
-
-            .sidebar.show {
-                display: block;
-            }
-
-            .main-content {
-                padding: 24px 15px;
-            }
-
-            .page-header {
-                flex-direction: column;
-            }
-
-            .page-title {
-                font-size: 1.7rem;
-            }
-
-            .account-email {
-                display: none;
-            }
-
-            .mobile-menu-button {
-                display: inline-block;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="admin.css">
+    <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+    rel="stylesheet">
 </head>
 
-<body>
+<body class="bg-light">
 
-    <!-- ====================================== -->
-    <!-- BARRA SUPERIOR -->
-    <!-- ====================================== -->
-
-    <nav class="navbar navbar-dark">
-        <div class="container-fluid px-3 px-md-4">
-
-            <a class="navbar-brand d-flex align-items-center gap-2 me-2"
-               href="admin.html">
-
-                <div class="logo-icon">
-                    <i class="bi bi-building"></i>
-                </div>
-
-                <span class="serif-font">
-                    Siandra - Admin
-                </span>
+    <!-- Barra superior -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin.html">
+                <i class="bi bi-building me-2"></i>
+                Siandra - Admin
             </a>
 
-            <div class="d-flex align-items-center gap-3 ms-auto">
-
-                <span id="accountEmail" class="account-email"></span>
+            <div class="d-flex align-items-center gap-3">
+                <span id="accountEmail" class="text-light"></span>
 
                 <button
                     id="logoutButton"
@@ -329,145 +39,131 @@
                     class="btn btn-outline-light btn-sm"
                 >
                     <i class="bi bi-box-arrow-right me-1"></i>
-                    <span class="d-none d-sm-inline">Cerrar sesión</span>
-                    <span class="d-sm-none">Salir</span>
+                    Cerrar sesión
                 </button>
-
             </div>
         </div>
     </nav>
 
+    <!-- Estructura principal -->
+    <div class="container-fluid">
+        <div class="row min-vh-100">
 
-    <!-- ====================================== -->
-    <!-- ESTRUCTURA PRINCIPAL -->
-    <!-- ====================================== -->
+            <!-- Menú lateral -->
+            <aside id="sidebar" class="col-md-3 col-lg-2 bg-white border-end p-3">
 
-    <div class="app-layout">
-
-        <!-- MENÚ LATERAL -->
-
-        <aside id="sidebar" class="sidebar">
-
-            <div class="sidebar-label">General</div>
-
-            <button
-                type="button"
-                class="nav-module active"
-                data-module="inicio"
-            >
-                <i class="bi bi-grid-1x2"></i>
-                Inicio
-            </button>
-
-
-            <div class="sidebar-label">Gestión inmobiliaria</div>
-
-            <button
-                type="button"
-                class="nav-module"
-                data-module="propiedades"
-            >
-                <i class="bi bi-houses"></i>
-                Propiedades
-            </button>
-
-            <button
-                type="button"
-                class="nav-module"
-                data-module="personas"
-            >
-                <i class="bi bi-people"></i>
-                Personas y clientes
-            </button>
-
-            <button
-                type="button"
-                class="nav-module"
-                data-module="visitas"
-            >
-                <i class="bi bi-calendar-week"></i>
-                Visitas y agenda
-            </button>
-
-            <button
-                type="button"
-                class="nav-module"
-                data-module="contratos"
-            >
-                <i class="bi bi-file-earmark-text"></i>
-                Contratos
-            </button>
-
-
-            <div class="sidebar-label">Administración</div>
-
-            <button
-                type="button"
-                class="nav-module"
-                data-module="finanzas"
-            >
-                <i class="bi bi-cash-stack"></i>
-                Finanzas y cobros
-            </button>
-
-            <button
-                type="button"
-                class="nav-module"
-                data-module="auditoria"
-            >
-                <i class="bi bi-clock-history"></i>
-                Auditoría
-            </button>
-
-        </aside>
-
-
-        <!-- CONTENIDO -->
-
-        <main class="main-content">
-
-            <div class="d-flex align-items-center gap-3 mb-4">
-
-                <button
-                    id="mobileMenuButton"
-                    type="button"
-                    class="btn btn-outline-secondary mobile-menu-button"
-                    aria-label="Mostrar menú"
-                    aria-expanded="false"
-                >
-                    <i class="bi bi-list"></i>
-                </button>
-
-                <div class="muted-text">
-                    Siandra /
-                    <span id="breadcrumb">Inicio</span>
+                <div class="text-secondary small fw-bold mb-2">
+                    GENERAL
                 </div>
 
-            </div>
+                <button
+                    type="button"
+                    class="nav-module active btn btn-light w-100 text-start mb-2"
+                    data-module="inicio"
+                >
+                    <i class="bi bi-grid-1x2 me-2"></i>
+                    Inicio
+                </button>
 
-            <!-- admin.js renderiza el contenido en esta sección -->
+                <div class="text-secondary small fw-bold mt-4 mb-2">
+                    GESTIÓN INMOBILIARIA
+                </div>
 
-            <section
-                id="moduleContent"
-                aria-live="polite"
-            ></section>
+                <button
+                    type="button"
+                    class="nav-module btn btn-light w-100 text-start mb-2"
+                    data-module="propiedades"
+                >
+                    <i class="bi bi-houses me-2"></i>
+                    Propiedades
+                </button>
 
-        </main>
+                <button
+                    type="button"
+                    class="nav-module btn btn-light w-100 text-start mb-2"
+                    data-module="personas"
+                >
+                    <i class="bi bi-people me-2"></i>
+                    Personas y clientes
+                </button>
 
+                <button
+                    type="button"
+                    class="nav-module btn btn-light w-100 text-start mb-2"
+                    data-module="visitas"
+                >
+                    <i class="bi bi-calendar-week me-2"></i>
+                    Visitas y agenda
+                </button>
+
+                <button
+                    type="button"
+                    class="nav-module btn btn-light w-100 text-start mb-2"
+                    data-module="contratos"
+                >
+                    <i class="bi bi-file-earmark-text me-2"></i>
+                    Contratos
+                </button>
+
+                <div class="text-secondary small fw-bold mt-4 mb-2">
+                    ADMINISTRACIÓN
+                </div>
+
+                <button
+                    type="button"
+                    class="nav-module btn btn-light w-100 text-start mb-2"
+                    data-module="finanzas"
+                >
+                    <i class="bi bi-cash-stack me-2"></i>
+                    Finanzas y cobros
+                </button>
+
+                <button
+                    type="button"
+                    class="nav-module btn btn-light w-100 text-start mb-2"
+                    data-module="auditoria"
+                >
+                    <i class="bi bi-clock-history me-2"></i>
+                    Auditoría
+                </button>
+
+            </aside>
+
+            <!-- Contenido principal -->
+            <main class="col-md-9 col-lg-10 p-4">
+
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <button
+                        id="mobileMenuButton"
+                        type="button"
+                        class="btn btn-outline-secondary d-md-none"
+                        aria-label="Mostrar menú"
+                        aria-expanded="false"
+                    >
+                        <i class="bi bi-list"></i>
+                    </button>
+
+                    <div class="text-secondary">
+                        Siandra /
+                        <span id="breadcrumb">Inicio</span>
+                    </div>
+                </div>
+
+                <!-- Aquí se cargan los módulos -->
+                <section
+                    id="moduleContent"
+                    aria-live="polite"
+                ></section>
+
+            </main>
+
+        </div>
     </div>
 
-
-    <!-- ====================================== -->
-    <!-- LIBRERÍAS Y ARCHIVOS JAVASCRIPT -->
-    <!-- El orden es importante -->
-    <!-- ====================================== -->
-
+    <!-- Librerías y archivos JavaScript: respetar este orden -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script src="supabaseClient.js"></script>
-
     <script src="admin.js"></script>
 
 </body>

@@ -1,156 +1,83 @@
 
-// ---- inicio de admin.js ----
+document.addEventListener('DOMContentLoaded', iniciarPanel);
 
-document.addEventListener('DOMContentLoaded', function () {
-
-    // ==========================================
-    // 1. REFERENCIAS A LOS ELEMENTOS
-    // ==========================================
-
-    const logoutButton = document.getElementById('logoutButton');
-    const accountEmail = document.getElementById('accountEmail');
-    const moduleContent = document.getElementById('moduleContent');
+async function iniciarPanel() {
+    const db = window.supabaseClient;
+    const contenido = document.getElementById('moduleContent');
     const sidebar = document.getElementById('sidebar');
     const breadcrumb = document.getElementById('breadcrumb');
-    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const accountEmail = document.getElementById('accountEmail');
 
-    let redirigiendoAlLogin = false;
+    if (!db || !contenido) {
+        console.error('No se encontró Supabase o el contenedor del panel.');
+        return;
+    }
 
+    let usuario = null;
+    let perfil = null;
 
-    // ==========================================
-    // 2. DEFINICIÓN DE LOS MÓDULOS
-    // ==========================================
-
-    const modules = {
-
-        inicio: {
-            title: 'Panel de Gestión',
-            subtitle: 'Resumen general de la actividad inmobiliaria.',
-            render: renderInicio
-        },
-
-        propiedades: {
-            title: 'Propiedades',
-            subtitle: 'Administrá inmuebles, publicaciones y disponibilidad.',
-            icon: 'bi-houses',
-            description: 'Acá vas a poder registrar propiedades, cargar imágenes, asignar propietarios, administrar precios y cambiar su estado.',
-            render: renderPlaceholder
-        },
-
-        personas: {
-            title: 'Personas y clientes',
-            subtitle: 'Directorio unificado de propietarios, inquilinos y clientes.',
-            icon: 'bi-people',
-            description: 'Acá vas a poder administrar fichas de personas, datos de contacto, roles, documentos y relaciones con propiedades y contratos.',
-            render: renderPlaceholder
-        },
-
-        visitas: {
-            title: 'Visitas y agenda',
-            subtitle: 'Organizá las visitas y el seguimiento comercial.',
-            icon: 'bi-calendar-week',
-            description: 'Acá vas a poder coordinar fechas, agentes, clientes y propiedades, y registrar el resultado de cada visita.',
-            render: renderPlaceholder
-        },
-
-        contratos: {
-            title: 'Contratos',
-            subtitle: 'Administrá alquileres, reservas y operaciones de venta.',
-            icon: 'bi-file-earmark-text',
-            description: 'Acá vas a poder vincular propiedades, inquilinos, garantes y propietarios, además de controlar vencimientos y estados.',
-            render: renderPlaceholder
-        },
-
-        finanzas: {
-            title: 'Finanzas y cobros',
-            subtitle: 'Controlá pagos, gastos, comisiones y liquidaciones.',
-            icon: 'bi-cash-stack',
-            description: 'Acá vas a poder registrar cobros parciales o totales, cuotas, deudas, gastos de propiedades y movimientos de caja.',
-            render: renderPlaceholder
-        },
-
-        auditoria: {
-            title: 'Auditoría',
-            subtitle: 'Historial de acciones realizadas en el sistema.',
-            icon: 'bi-clock-history',
-            description: 'Acá vas a poder consultar quién realizó cada cambio, cuándo lo hizo y qué información fue modificada.',
-            render: renderPlaceholder
-        }
-
+    const nombres = {
+        inicio: 'Inicio',
+        propiedades: 'Propiedades',
+        personas: 'Personas y clientes',
+        visitas: 'Visitas y agenda',
+        contratos: 'Contratos',
+        finanzas: 'Finanzas y cobros',
+        auditoria: 'Auditoría'
     };
 
+    window.Siandra = {
+        db,
+        contenido,
 
-    // ==========================================
-    // 3. VERIFICACIÓN DE LA SESIÓN
-    // ==========================================
+        usuario: () => usuario,
+        perfil: () => perfil,
+        esAdmin: () => perfil?.role === 'admin',
 
-    async function comprobarSesion() {
+        escapar(texto) {
+            return String(texto ?? '').replace(/[&<>"']/g, caracter => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            })[caracter]);
+        },
 
-        try {
+        mensaje(texto, tipo = 'success') {
+            const alerta = document.createElement('div');
+            alerta.className = `alert alert-${tipo} mt-3`;
+            alerta.textContent = texto;
+            contenido.prepend(alerta);
+        },
 
-            const { data, error } =
-                await supabaseClient.auth.getSession();
+        irA: mostrarModulo
+    };
 
-            if (error) {
-                console.error(
-                    'Error al comprobar la sesión:',
-                    error
-                );
+    async function cargarScript(archivo) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = archivo;
 
-                redirigirAlLogin();
-                return;
-            }
-
-            if (!data.session) {
-                redirigirAlLogin();
-                return;
-            }
-
-            accountEmail.textContent =
-                data.session.user.email || 'Sesión activa';
-
-            mostrarModulo('inicio');
-
-        } catch (error) {
-
-            console.error(
-                'Error inesperado al comprobar la sesión:',
-                error
+            script.onload = resolve;
+            script.onerror = () => reject(
+                new Error(`No se pudo cargar ${archivo}`)
             );
 
-            redirigirAlLogin();
-
-        }
-
+            document.body.appendChild(script);
+        });
     }
-
-
-    function redirigirAlLogin() {
-
-        if (redirigiendoAlLogin) return;
-
-        redirigiendoAlLogin = true;
-        window.location.replace('login.html');
-
-    }
-
-
-    // ==========================================
-    // 4. PANTALLA DE INICIO
-    // ==========================================
 
     function renderInicio() {
+        const nombre = perfil?.full_name || usuario?.email || 'usuario';
+        const esAdmin = window.Siandra.esAdmin();
 
-        return `
-            <div class="page-header">
-
+        contenido.innerHTML = `
+            <div class="page-header mb-4">
                 <div>
-                    <h1 class="page-title serif-font">
-                        Panel de Gestión
-                    </h1>
-
+                    <h1 class="page-title">Panel de Gestión</h1>
                     <p class="muted-text mb-0">
-                        Bienvenido al sistema de gestión de Siandra.
+                        Bienvenido/a, ${window.Siandra.escapar(nombre)}.
                     </p>
                 </div>
 
@@ -158,422 +85,350 @@ document.addEventListener('DOMContentLoaded', function () {
                     <i class="bi bi-shield-check"></i>
                     Sesión autenticada
                 </span>
-
             </div>
-
 
             <div class="row g-3 mb-4">
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="admin-card stat-card">
+                        <div class="stat-icon">
+                            <i class="bi bi-house"></i>
+                        </div>
+                        <div class="stat-value" id="totalPropiedades">—</div>
+                        <div class="stat-label">Propiedades registradas</div>
+                    </div>
+                </div>
 
-                ${statCard(
-                    'bi-houses',
-                    'Propiedades registradas',
-                    '—'
-                )}
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="admin-card stat-card">
+                        <div class="stat-icon">
+                            <i class="bi bi-file-earmark-check"></i>
+                        </div>
+                        <div class="stat-value" id="totalContratos">—</div>
+                        <div class="stat-label">Contratos activos</div>
+                    </div>
+                </div>
 
-                ${statCard(
-                    'bi-file-earmark-check',
-                    'Contratos activos',
-                    '—'
-                )}
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="admin-card stat-card">
+                        <div class="stat-icon">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <div class="stat-value" id="totalVisitas">—</div>
+                        <div class="stat-label">Visitas pendientes</div>
+                    </div>
+                </div>
 
-                ${statCard(
-                    'bi-calendar-check',
-                    'Visitas pendientes',
-                    '—'
-                )}
-
-                ${statCard(
-                    'bi-cash-stack',
-                    'Comisiones del mes',
-                    '—'
-                )}
-
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="admin-card stat-card">
+                        <div class="stat-icon">
+                            <i class="bi bi-cash-stack"></i>
+                        </div>
+                        <div class="stat-value" id="totalComisiones">—</div>
+                        <div class="stat-label">Comisiones del mes</div>
+                    </div>
+                </div>
             </div>
 
-
             <div class="row g-4">
-
                 <div class="col-12 col-xl-7">
-
                     <div class="admin-card p-4 h-100">
-
-                        <h2 class="section-heading mb-3">
-                            Accesos rápidos
-                        </h2>
+                        <h2 class="section-heading">Accesos rápidos</h2>
 
                         <p class="muted-text mb-4">
                             Elegí un módulo para comenzar a trabajar.
                         </p>
 
                         <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <button
+                                    class="btn btn-outline-secondary w-100 p-3 text-start"
+                                    data-ir="propiedades"
+                                >
+                                    <i class="bi bi-houses me-2"></i>
+                                    Propiedades
+                                    <i class="bi bi-arrow-right float-end"></i>
+                                </button>
+                            </div>
 
-                            ${quickLink(
-                                'propiedades',
-                                'bi-houses',
-                                'Propiedades'
-                            )}
+                            <div class="col-12 col-md-6">
+                                <button
+                                    class="btn btn-outline-secondary w-100 p-3 text-start"
+                                    data-ir="personas"
+                                >
+                                    <i class="bi bi-people me-2"></i>
+                                    Personas y clientes
+                                    <i class="bi bi-arrow-right float-end"></i>
+                                </button>
+                            </div>
 
-                            ${quickLink(
-                                'personas',
-                                'bi-people',
-                                'Personas y clientes'
-                            )}
+                            <div class="col-12 col-md-6">
+                                <button
+                                    class="btn btn-outline-secondary w-100 p-3 text-start"
+                                    data-ir="visitas"
+                                >
+                                    <i class="bi bi-calendar-week me-2"></i>
+                                    Visitas y agenda
+                                    <i class="bi bi-arrow-right float-end"></i>
+                                </button>
+                            </div>
 
-                            ${quickLink(
-                                'visitas',
-                                'bi-calendar-week',
-                                'Agenda de visitas'
-                            )}
-
-                            ${quickLink(
-                                'contratos',
-                                'bi-file-earmark-text',
-                                'Contratos'
-                            )}
-
+                            <div class="col-12 col-md-6">
+                                <button
+                                    class="btn btn-outline-secondary w-100 p-3 text-start"
+                                    data-ir="contratos"
+                                >
+                                    <i class="bi bi-file-earmark-text me-2"></i>
+                                    Contratos
+                                    <i class="bi bi-arrow-right float-end"></i>
+                                </button>
+                            </div>
                         </div>
-
                     </div>
-
                 </div>
 
-
                 <div class="col-12 col-xl-5">
-
                     <div class="admin-card p-4 h-100">
-
-                        <h2 class="section-heading mb-3">
+                        <h2 class="section-heading mb-4">
                             Estado del sistema
                         </h2>
 
-
-                        <div class="d-flex align-items-start gap-3 mb-3">
-
-                            <i class="bi bi-check-circle-fill text-success fs-5"></i>
-
+                        <div class="d-flex gap-3 mb-4">
+                            <i class="bi bi-check-circle-fill text-success fs-4"></i>
                             <div>
-                                <div class="fw-semibold">
-                                    Autenticación
-                                </div>
-
-                                <div class="muted-text">
+                                <strong>Autenticación</strong>
+                                <p class="muted-text mb-0">
                                     Sesión de Supabase verificada.
-                                </div>
+                                </p>
                             </div>
-
                         </div>
 
-
-                        <div class="d-flex align-items-start gap-3 mb-3">
-
-                            <i class="bi bi-hourglass-split text-warning fs-5"></i>
-
+                        <div class="d-flex gap-3 mb-4">
+                            <i class="bi bi-puzzle fs-4 text-warning"></i>
                             <div>
-                                <div class="fw-semibold">
-                                    Módulos de gestión
-                                </div>
-
-                                <div class="muted-text">
-                                    Pendientes de conexión con la base de datos.
-                                </div>
+                                <strong>Módulos de gestión</strong>
+                                <p class="muted-text mb-0" id="estadoModulos">
+                                    Verificando módulos...
+                                </p>
                             </div>
-
                         </div>
 
-
-                        <div class="d-flex align-items-start gap-3">
-
-                            <i class="bi bi-shield-lock text-secondary fs-5"></i>
-
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-person-check fs-4 text-success"></i>
                             <div>
-                                <div class="fw-semibold">
-                                    Roles y permisos
-                                </div>
-
-                                <div class="muted-text">
-                                    Deben configurarse en la base de datos antes de habilitar operaciones.
-                                </div>
+                                <strong>Tipo de usuario</strong>
+                                <p class="muted-text mb-0">
+                                    ${esAdmin ? 'Administrador' : 'Agente'}
+                                </p>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
         `;
 
+        cargarEstadisticas();
+        actualizarEstadoModulos();
     }
 
+    async function cargarEstadisticas() {
+        const consultas = [
+            {
+                tabla: 'properties',
+                elemento: 'totalPropiedades',
+                filtro: true
+            },
+            {
+                tabla: 'contracts',
+                elemento: 'totalContratos',
+                filtro: false,
+                estado: 'Activo'
+            },
+            {
+                tabla: 'visits',
+                elemento: 'totalVisitas',
+                filtro: false,
+                estado: 'Pendiente'
+            }
+        ];
 
-    // ==========================================
-    // 5. TARJETAS DE INDICADORES
-    // ==========================================
+        for (const consulta of consultas) {
+            try {
+                let peticion = db
+                    .from(consulta.tabla)
+                    .select('id', { count: 'exact', head: true });
 
-    function statCard(icon, label, value) {
+                if (consulta.filtro) {
+                    peticion = peticion.is('archived_at', null);
+                }
 
-        return `
-            <div class="col-12 col-sm-6 col-xl-3">
+                if (consulta.estado) {
+                    peticion = peticion.eq('status', consulta.estado);
+                }
 
-                <div class="admin-card stat-card">
+                const { count, error } = await peticion;
 
-                    <div class="stat-icon">
-                        <i class="bi ${icon}"></i>
-                    </div>
+                const elemento = document.getElementById(consulta.elemento);
+                if (!elemento) continue;
 
-                    <div class="stat-value">
-                        ${value}
-                    </div>
+                elemento.textContent = error ? '—' : (count ?? 0);
 
-                    <div class="stat-label">
-                        ${label}
-                    </div>
+                if (error) {
+                    console.warn(
+                        `No se pudo consultar ${consulta.tabla}:`,
+                        error.message
+                    );
+                }
+            } catch (error) {
+                console.warn(
+                    `Error al consultar ${consulta.tabla}:`,
+                    error
+                );
+            }
+        }
 
-                </div>
-
-            </div>
-        `;
-
+        // Las comisiones requieren una tabla y una estructura confirmadas.
+        const comisiones = document.getElementById('totalComisiones');
+        if (comisiones) {
+            comisiones.textContent = '—';
+        }
     }
 
+    function actualizarEstadoModulos() {
+        const elemento = document.getElementById('estadoModulos');
+        if (!elemento) return;
 
-    // ==========================================
-    // 6. ACCESOS RÁPIDOS
-    // ==========================================
+        const propiedades = typeof window.SiandraModulos?.propiedades?.render === 'function';
+        const personas = typeof window.SiandraModulos?.personas?.render === 'function';
 
-    function quickLink(module, icon, label) {
-
-        return `
-            <div class="col-12 col-sm-6">
-
-                <button
-                    type="button"
-                    class="btn btn-light border w-100 text-start p-3 quick-link"
-                    data-open-module="${module}"
-                >
-
-                    <i class="bi ${icon} me-2 text-warning"></i>
-
-                    ${label}
-
-                    <i class="bi bi-arrow-right float-end"></i>
-
-                </button>
-
-            </div>
-        `;
-
+        if (propiedades && personas) {
+            elemento.textContent = 'Propiedades y personas disponibles.';
+        } else {
+            elemento.textContent = 'Algunos módulos todavía están en desarrollo.';
+        }
     }
 
+    async function mostrarModulo(nombre) {
+        document.querySelectorAll('.nav-module').forEach(boton => {
+            boton.classList.toggle(
+                'active',
+                boton.dataset.module === nombre
+            );
+        });
 
-    // ==========================================
-    // 7. CONTENIDO DE LOS MÓDULOS
-    // ==========================================
+        if (breadcrumb) {
+            breadcrumb.textContent = nombres[nombre] || nombre;
+        }
 
-    function renderPlaceholder(module) {
+        sidebar?.classList.remove('show');
 
-        return `
-            <div class="page-header">
+        if (nombre === 'inicio') {
+            renderInicio();
+            return;
+        }
 
-                <div>
-                    <h1 class="page-title serif-font">
-                        ${module.title}
-                    </h1>
+        const modulo = window.SiandraModulos?.[nombre];
 
+        if (modulo && typeof modulo.render === 'function') {
+            await modulo.render();
+        } else {
+            contenido.innerHTML = `
+                <div class="admin-card p-4">
+                    <h2>${window.Siandra.escapar(nombres[nombre] || nombre)}</h2>
                     <p class="muted-text mb-0">
-                        ${module.subtitle}
+                        Este módulo todavía está en desarrollo.
                     </p>
                 </div>
+            `;
+        }
+    }
 
-            </div>
+    document.querySelectorAll('.nav-module').forEach(boton => {
+        boton.addEventListener('click', () => {
+            mostrarModulo(boton.dataset.module);
+        });
+    });
 
+    document.addEventListener('click', event => {
+        const boton = event.target.closest('[data-ir]');
 
-            <div class="admin-card module-placeholder">
+        if (boton) {
+            mostrarModulo(boton.dataset.ir);
+        }
+    });
 
-                <div class="empty-icon">
-                    <i class="bi ${module.icon}"></i>
-                </div>
+    document.getElementById('mobileMenuButton')?.addEventListener('click', event => {
+        sidebar?.classList.toggle('show');
 
-                <h2 class="section-heading mb-3">
-                    Módulo preparado
-                </h2>
+        event.currentTarget.setAttribute(
+            'aria-expanded',
+            sidebar?.classList.contains('show') ? 'true' : 'false'
+        );
+    });
 
-                <p
-                    class="muted-text mx-auto mb-4"
-                    style="max-width: 570px;"
-                >
-                    ${module.description}
-                </p>
+    document.getElementById('logoutButton')?.addEventListener('click', async () => {
+        if (!confirm('¿Querés cerrar la sesión?')) return;
 
-                <span class="status-note">
-                    <i class="bi bi-hourglass-split"></i>
-                    Pendiente de conexión con Supabase
-                </span>
+        const { error } = await db.auth.signOut({ scope: 'local' });
 
+        if (error) {
+            console.error(error);
+            alert('No se pudo cerrar la sesión.');
+            return;
+        }
+
+        window.location.href = 'login.html';
+    });
+
+    try {
+        const { data, error } = await db.auth.getSession();
+
+        if (error || !data.session) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        usuario = data.session.user;
+
+        if (accountEmail) {
+            accountEmail.textContent = usuario.email || '';
+        }
+
+        const { data: datosPerfil, error: errorPerfil } = await db
+            .from('profiles')
+            .select('id, full_name, role')
+            .eq('id', usuario.id)
+            .maybeSingle();
+
+        if (errorPerfil) {
+            console.error('No se pudo cargar el perfil:', errorPerfil);
+        }
+
+        perfil = datosPerfil || { role: 'agente' };
+
+        window.SiandraModulos = {};
+
+        await cargarScript('propiedades.js');
+        await cargarScript('personas.js');
+        await cargarScript('visitas.js');
+        await cargarScript('contratos.js');
+        await cargarScript('finanzas.js');
+        await cargarScript('auditoria.js');
+
+        await mostrarModulo('inicio');
+
+    } catch (error) {
+        console.error('Error al iniciar el panel:', error);
+
+        contenido.innerHTML = `
+            <div class="alert alert-danger">
+                No se pudo iniciar el panel. Revisá la consola del navegador.
             </div>
         `;
-
     }
 
-
-    // ==========================================
-    // 8. NAVEGACIÓN ENTRE MÓDULOS
-    // ==========================================
-
-    function mostrarModulo(moduleKey) {
-
-        const module = modules[moduleKey];
-
-        if (!module) return;
-
-        // Actualizar el botón seleccionado.
-
-        document.querySelectorAll('.nav-module').forEach(button => {
-
-            button.classList.toggle(
-                'active',
-                button.dataset.module === moduleKey
-            );
-
-        });
-
-
-        // Actualizar la ruta superior.
-
-        breadcrumb.textContent = module.title;
-
-
-        // Renderizar el contenido.
-
-        moduleContent.innerHTML = module.render(module);
-
-
-        // Cerrar el menú móvil al seleccionar un módulo.
-
-        sidebar.classList.remove('show');
-
-        mobileMenuButton.setAttribute('aria-expanded', 'false');
-
-
-        // Activar los accesos rápidos.
-
-        moduleContent
-            .querySelectorAll('[data-open-module]')
-            .forEach(button => {
-
-                button.addEventListener('click', function () {
-
-                    mostrarModulo(this.dataset.openModule);
-
-                });
-
-            });
-
-    }
-
-
-    // ==========================================
-    // 9. EVENTOS DEL MENÚ LATERAL
-    // ==========================================
-
-    document.querySelectorAll('.nav-module').forEach(button => {
-
-        button.addEventListener('click', function () {
-
-            mostrarModulo(this.dataset.module);
-
-        });
-
-    });
-
-
-    // ==========================================
-    // 10. MENÚ PARA CELULARES
-    // ==========================================
-
-    if (mobileMenuButton) {
-
-        mobileMenuButton.addEventListener('click', function () {
-
-            const abierto = sidebar.classList.toggle('show');
-
-            mobileMenuButton.setAttribute(
-                'aria-expanded',
-                String(abierto)
-            );
-
-        });
-
-    }
-
-
-    // ==========================================
-    // 11. CERRAR SESIÓN
-    // ==========================================
-
-    logoutButton.addEventListener('click', async function () {
-
-        logoutButton.disabled = true;
-
-        logoutButton.innerHTML =
-            '<span class="spinner-border spinner-border-sm me-1"></span> Cerrando...';
-
-        try {
-
-            const { error } =
-                await supabaseClient.auth.signOut({
-                    scope: 'local'
-                });
-
-            if (error) {
-                throw error;
-            }
-
-            redirigirAlLogin();
-
-        } catch (error) {
-
-            console.error(
-                'Error al cerrar sesión:',
-                error
-            );
-
-            logoutButton.disabled = false;
-
-            logoutButton.innerHTML =
-                '<i class="bi bi-box-arrow-right me-1"></i>' +
-                '<span class="d-none d-sm-inline">Cerrar sesión</span>' +
-                '<span class="d-sm-none">Salir</span>';
-
-            alert(
-                'No se pudo cerrar la sesión. Intentá nuevamente.'
-            );
-
+    db.auth.onAuthStateChange(event => {
+        if (event === 'SIGNED_OUT') {
+            window.location.href = 'login.html';
         }
-
     });
-
-
-    // ==========================================
-    // 12. DETECTAR CIERRE DE SESIÓN
-    // ==========================================
-
-    supabaseClient.auth.onAuthStateChange(function (event, session) {
-
-        if (event === 'SIGNED_OUT' || !session) {
-            redirigirAlLogin();
-        }
-
-    });
-
-
-    // ==========================================
-    // 13. INICIAR EL PANEL
-    // ==========================================
-
-    comprobarSesion();
-
-});
-
-// ---- fin de admin.js ----
+}
