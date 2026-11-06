@@ -169,3 +169,62 @@ body {
 @media (max-width: 768px) {
     .hero-title { font-size: 2.5rem; }
 }
+/* ==========================================
+   GALERIA DE FOTOGRAFIAS DE PROPIEDADES
+========================================== */
+
+.property-gallery {
+    width: 100%;
+    overflow: hidden;
+    background: #f1f1f1;
+    touch-action: pan-y;
+}
+
+.property-gallery .property-img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    color: #171728;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.gallery-arrow:hover {
+    background: #fff;
+    transform: translateY(-50%) scale(1.08);
+}
+
+.gallery-prev {
+    left: 10px;
+}
+
+.gallery-next {
+    right: 10px;
+}
+
+.gallery-counter {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(0,0,0,0.65);
+    color: #fff;
+    font-size: 12px;
+}

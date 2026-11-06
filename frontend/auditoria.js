@@ -5,6 +5,7 @@
             const app = window.Siandra;
             const db = app.db;
             const contenido = app.contenido;
+            const escapar = app.escapar;
 
             contenido.innerHTML = `
                 <div class="page-header mb-4">
@@ -72,8 +73,6 @@
                 </div>
             `;
 
-            const escapar = app.escapar;
-
             function mostrarFecha(valor) {
                 if (!valor) return '—';
 
@@ -86,7 +85,8 @@
                     month: '2-digit',
                     year: 'numeric',
                     hour: '2-digit',
-                    minute: '2-digit'
+                    minute: '2-digit',
+                    second: '2-digit'
                 });
             }
 
@@ -123,43 +123,235 @@
                 return nombres[entidad] || entidad || 'Sin especificar';
             }
 
-            function resumenDatos(datos) {
-                if (!datos || typeof datos !== 'object') {
-                    return 'Sin detalles adicionales';
-                }
-
-                const campos = [
-                    'title',
-                    'property_code',
-                    'full_name',
-                    'concept',
-                    'contract_type',
-                    'status',
-                    'email',
-                    'phone'
-                ];
-
-                const encontrados = campos
-                    .filter(campo => datos[campo] !== undefined &&
-                        datos[campo] !== null &&
-                        datos[campo] !== '')
-                    .map(campo =>
-                        `${campo}: ${String(datos[campo]).slice(0, 100)}`
-                    );
-
-                return encontrados.length
-                    ? encontrados.join(' · ')
-                    : 'Ver detalles';
-            }
-
             function datosLegibles(datos) {
-                if (!datos) return 'Sin datos';
+                if (datos === null || datos === undefined) {
+                    return 'Sin datos registrados';
+                }
 
                 try {
                     return JSON.stringify(datos, null, 2);
                 } catch {
                     return 'No se pudieron mostrar los detalles';
                 }
+            }
+
+            function mostrarDetalle(registro) {
+                document.getElementById('modalDetalleAuditoria')?.remove();
+
+                const modal = document.createElement('div');
+
+                modal.id = 'modalDetalleAuditoria';
+                modal.innerHTML = `
+                    <div class="auditoria-overlay">
+                        <div class="auditoria-modal" role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="tituloDetalleAuditoria">
+
+                            <div class="d-flex justify-content-between
+                                align-items-center border-bottom pb-3 mb-3">
+                                <div>
+                                    <h4 id="tituloDetalleAuditoria"
+                                        class="fw-bold mb-1">
+                                        Detalle de auditoría
+                                    </h4>
+                                    <span class="text-muted small">
+                                        Información de la operación registrada
+                                    </span>
+                                </div>
+
+                                <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    data-cerrar-auditoria
+                                    aria-label="Cerrar">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <div class="auditoria-dato">
+                                        <small>Operación</small>
+                                        <div>
+                                            <span class="badge text-bg-${colorAccion(registro.action)}">
+                                                ${escapar(nombreAccion(registro.action))}
+                                            </span>
+                                            <span class="text-muted small ms-1">
+                                                ${escapar(registro.action)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="auditoria-dato">
+                                        <small>Fecha y hora</small>
+                                        <strong>
+                                            ${escapar(mostrarFecha(registro.created_at))}
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="auditoria-dato">
+                                        <small>Módulo</small>
+                                        <strong>
+                                            ${escapar(nombreEntidad(registro.entity_table))}
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="auditoria-dato">
+                                        <small>ID del registro afectado</small>
+                                        <strong class="text-break">
+                                            ${escapar(registro.record_id || 'No disponible')}
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="auditoria-dato">
+                                        <small>Usuario responsable (UUID)</small>
+                                        <strong class="text-break">
+                                            ${escapar(registro.user_id || 'No identificado')}
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="auditoria-dato">
+                                        <small>ID de auditoría</small>
+                                        <strong class="text-break">
+                                            ${escapar(registro.id)}
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 class="fw-bold mb-2">
+                                <i class="bi bi-clock-history me-2"></i>
+                                Datos anteriores
+                            </h5>
+
+                            <pre class="auditoria-json">${escapar(datosLegibles(registro.old_data))}</pre>
+
+                            <h5 class="fw-bold mt-4 mb-2">
+                                <i class="bi bi-arrow-repeat me-2"></i>
+                                Datos nuevos
+                            </h5>
+
+                            <pre class="auditoria-json">${escapar(datosLegibles(registro.new_data))}</pre>
+
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="button"
+                                    class="btn btn-dark"
+                                    data-cerrar-auditoria>
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const estilos = document.createElement('style');
+
+                estilos.textContent = `
+                    .auditoria-overlay {
+                        position: fixed;
+                        inset: 0;
+                        z-index: 10000;
+                        background: rgba(0, 0, 0, .65);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 20px;
+                        overflow-y: auto;
+                    }
+
+                    .auditoria-modal {
+                        background: #fff;
+                        color: #243044;
+                        width: 100%;
+                        max-width: 850px;
+                        max-height: 90vh;
+                        overflow-y: auto;
+                        border-radius: 12px;
+                        padding: 24px;
+                        box-shadow: 0 15px 50px rgba(0,0,0,.25);
+                    }
+
+                    .auditoria-dato {
+                        background: #f5f6f8;
+                        padding: 13px;
+                        border-radius: 8px;
+                        height: 100%;
+                    }
+
+                    .auditoria-dato small {
+                        display: block;
+                        color: #697586;
+                        margin-bottom: 6px;
+                    }
+
+                    .auditoria-dato strong {
+                        font-size: 13px;
+                        overflow-wrap: anywhere;
+                    }
+
+                    .auditoria-json {
+                        background: #f3f5f7;
+                        color: #263449;
+                        border: 1px solid #e1e5ea;
+                        padding: 16px;
+                        border-radius: 8px;
+                        font-size: 12px;
+                        line-height: 1.6;
+                        white-space: pre-wrap;
+                        overflow-wrap: anywhere;
+                        max-height: 350px;
+                        overflow: auto;
+                        margin: 0;
+                    }
+
+                    @media(max-width: 576px) {
+                        .auditoria-overlay {
+                            padding: 8px;
+                        }
+
+                        .auditoria-modal {
+                            padding: 16px;
+                            max-height: 95vh;
+                        }
+                    }
+                `;
+
+                modal.appendChild(estilos);
+                document.body.appendChild(modal);
+
+                function cerrarModal() {
+                    modal.remove();
+                    document.removeEventListener('keydown', cerrarConEscape);
+                }
+
+                function cerrarConEscape(event) {
+                    if (event.key === 'Escape') {
+                        cerrarModal();
+                    }
+                }
+
+                modal.querySelectorAll('[data-cerrar-auditoria]')
+                    .forEach(boton => {
+                        boton.addEventListener('click', cerrarModal);
+                    });
+
+                modal.querySelector('.auditoria-overlay')
+                    .addEventListener('click', event => {
+                        if (event.target.classList.contains('auditoria-overlay')) {
+                            cerrarModal();
+                        }
+                    });
+
+                document.addEventListener('keydown', cerrarConEscape);
             }
 
             async function cargarAuditoria() {
@@ -171,6 +363,7 @@
 
                 lista.innerHTML =
                     '<p class="muted-text">Cargando registros...</p>';
+
                 total.textContent = '';
                 boton.disabled = true;
 
@@ -201,22 +394,19 @@
                     const { data, error } = await consulta;
 
                     if (error) {
-                        console.error(
-                            'Error al cargar auditoría:',
-                            error
-                        );
+                        console.error('Error al cargar auditoría:', error);
 
                         lista.innerHTML = `
                             <div class="alert alert-danger">
                                 No se pudo consultar la auditoría.
-                                Verificá que tu usuario tenga el rol de
-                                administrador y que las políticas RLS
-                                permitan leer estos registros.
+                                Verificá los permisos de lectura y las políticas RLS.
+                                <br><small>${escapar(error.message)}</small>
                             </div>`;
                         return;
                     }
 
                     const registros = data || [];
+
                     total.textContent =
                         `${registros.length} registro(s), máximo 200`;
 
@@ -244,20 +434,24 @@
                                         <th>Detalles</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     ${registros.map(registro => `
                                         <tr>
                                             <td class="text-nowrap">
                                                 ${escapar(mostrarFecha(registro.created_at))}
                                             </td>
+
                                             <td>
                                                 <span class="badge text-bg-${colorAccion(registro.action)}">
                                                     ${escapar(nombreAccion(registro.action))}
                                                 </span>
                                             </td>
+
                                             <td>
                                                 ${escapar(nombreEntidad(registro.entity_table))}
                                             </td>
+
                                             <td>
                                                 <span class="small"
                                                     title="${escapar(registro.user_id || '')}">
@@ -268,6 +462,7 @@
                                                     )}
                                                 </span>
                                             </td>
+
                                             <td>
                                                 <span class="small"
                                                     title="${escapar(registro.record_id || '')}">
@@ -278,6 +473,7 @@
                                                     )}
                                                 </span>
                                             </td>
+
                                             <td>
                                                 <button type="button"
                                                     class="btn btn-outline-secondary btn-sm verAuditoria"
@@ -293,89 +489,27 @@
                         </div>
                     `;
 
-                    lista.querySelectorAll('.verAuditoria')
-                        .forEach(botonDetalle => {
-                            botonDetalle.addEventListener('click', () => {
-                                const registro = registros.find(
-                                    r => r.id === botonDetalle.dataset.id
-                                );
+                    lista.addEventListener('click', event => {
+                        const botonDetalle = event.target.closest('.verAuditoria');
 
-                                if (!registro) return;
+                        if (!botonDetalle) return;
 
-                                const anterior = datosLegibles(registro.old_data);
-                                const nuevo = datosLegibles(registro.new_data);
+                        const registro = registros.find(
+                            r => String(r.id) === String(botonDetalle.dataset.id)
+                        );
 
-                                const ventana = window.open(
-                                    '',
-                                    '_blank',
-                                    'width=850,height=700'
-                                );
+                        if (registro) {
+                            mostrarDetalle(registro);
+                        }
+                    });
 
-                                if (!ventana) {
-                                    alert(
-                                        'El navegador bloqueó la ventana. Permití las ventanas emergentes para ver el detalle.'
-                                    );
-                                    return;
-                                }
-
-                                const titulo =
-                                    `Auditoría: ${nombreAccion(registro.action)}`;
-
-                                const contenidoDetalle = `
-                                    <!DOCTYPE html>
-                                    <html lang="es">
-                                    <head>
-                                        <meta charset="UTF-8">
-                                        <meta name="viewport"
-                                            content="width=device-width, initial-scale=1">
-                                        <title>${escapar(titulo)}</title>
-                                        <style>
-                                            body {
-                                                font-family: Arial, sans-serif;
-                                                padding: 24px;
-                                                color: #243044;
-                                            }
-                                            h1 { font-size: 22px; }
-                                            h2 { font-size: 17px; margin-top: 24px; }
-                                            p { line-height: 1.5; }
-                                            pre {
-                                                background: #f3f5f7;
-                                                padding: 16px;
-                                                border-radius: 8px;
-                                                overflow: auto;
-                                                white-space: pre-wrap;
-                                                overflow-wrap: anywhere;
-                                            }
-                                        </style>
-                                    </head>
-                                    <body>
-                                        <h1>${escapar(titulo)}</h1>
-                                        <p><strong>Fecha:</strong>
-                                            ${escapar(mostrarFecha(registro.created_at))}</p>
-                                        <p><strong>Módulo:</strong>
-                                            ${escapar(nombreEntidad(registro.entity_table))}</p>
-                                        <p><strong>Usuario:</strong>
-                                            ${escapar(registro.user_id || 'No identificado')}</p>
-                                        <p><strong>ID del registro:</strong>
-                                            ${escapar(registro.record_id || '—')}</p>
-                                        <h2>Datos anteriores</h2>
-                                        <pre>${escapar(anterior)}</pre>
-                                        <h2>Datos nuevos</h2>
-                                        <pre>${escapar(nuevo)}</pre>
-                                    </body>
-                                    </html>
-                                `;
-
-                                ventana.document.open();
-                                ventana.document.write(contenidoDetalle);
-                                ventana.document.close();
-                            });
-                        });
                 } catch (error) {
                     console.error('Error inesperado en auditoría:', error);
+
                     lista.innerHTML = `
                         <div class="alert alert-danger">
                             Ocurrió un error inesperado al cargar la auditoría.
+                            <br><small>${escapar(error.message)}</small>
                         </div>`;
                 } finally {
                     boton.disabled = false;
